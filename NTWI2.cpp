@@ -1,5 +1,6 @@
 ﻿// NTWI2.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
-//
+
+//INCLUDY
 
 #include <iostream>
 #include <string>
@@ -7,7 +8,7 @@
 
 #include "Classes.h"
 
-
+//DEKLARACJE
 
 std::vector <Car> carVector;
 
