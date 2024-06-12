@@ -7,15 +7,22 @@ void drawPoints(const std::vector<std::pair<int, int>>& points, const std::vecto
         const auto& point = points[i];
         float x = point.first;
         float y = point.second;
-        float radius = 0.1f * points2[i]; // Promieñ okrêgu punktu
-        if (radius < 1) {
-            glColor3f(0.0f, 1.0f, 0.0f);
+        float radius = points2[i]/5; // Promieñ okrêgu punktu
+        if (points2[i] < 10) {
+            if (points2[i] == 0){
+                glColor3f(0.0f, 0.5f, 1.0f);
+                radius = 1.0f;
+            }
+            else {
+                glColor3f(0.0f, 1.0f, 0.0f);
+            }
+            
         }
-        else if (radius < 2) {
+        else if (points2[i] < 20) {
             glColor3f(1.0f, 1.0f, 0.0f);
             radius /= 2;
         }
-        else if (radius < 3) {
+        else if (points2[i] < 30) {
             glColor3f(1.0f, 0.0f, 0.0f);
             radius /= 3;
         }
