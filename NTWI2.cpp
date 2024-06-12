@@ -1,10 +1,10 @@
 ﻿// NTWI2.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
 
-//INCLUDY
+//INCLUDY nie zapominaj o tych w Functions.h!!!
 
-#include <iostream>
-#include <vector>
 #include <fstream>
+
+#include <windows.h>
 
 #include "Classes.h"
 #include "Functions.h"
@@ -16,6 +16,7 @@ std::fstream input;
 int dimension, capacity;
 std::vector <std::pair<int, int>> coord;
 std::vector <int> demand;
+int window_height = 750, window_width = 750;
 
 
 int main()
@@ -57,6 +58,41 @@ int main()
         input.close();
     }
     // w wektorze coord siedzą koordy bez ID po prostu po kolei, a w wektorze demand tak samo siedzą zapotrzebowania konkretnych punktów
+    for (const auto& i : coord) {
+        std::cout << i.first << " " << i.second << std::endl;
+    }
+    //wypis tych punktów
+
+    GLFWwindow* window;
+
+    /* Initialize the library */
+    if (!initOpenGL(&window, window_width, window_height, "2D Points Graph")) {
+        return -1;
+    }
+
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glPointSize(5.0f);
+    /* Make the window's context current */
+    glfwMakeContextCurrent(window);
+
+    /* Loop until the user closes the window */
+    while (!glfwWindowShouldClose(window))
+    {
+        glClear(GL_COLOR_BUFFER_BIT);
+        drawAxes();
+        // Rysowanie punktów
+        glColor3f(1.0f, 0.0f, 0.0f); //czerwony
+        drawPoints(coord);
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+    glfwDestroyWindow(window);
+    glfwTerminate();
+
+    
+
+    return 0;
 }
 
 // Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania
