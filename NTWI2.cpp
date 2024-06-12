@@ -16,7 +16,7 @@ std::fstream input;
 int dimension, capacity;
 std::vector <std::pair<int, int>> coord;
 std::vector <int> demand;
-int window_height = 750, window_width = 750;
+int window_height = 800, window_width = 800;
 
 
 int main()
