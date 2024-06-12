@@ -6,7 +6,7 @@
 #include <iostream>
 
 void drawCircle(float x, float y, float radius, int segments);
-void drawPoints(const std::vector<std::pair<int, int>>& points);
+void drawPoints(const std::vector<std::pair<int, int>>& points, const std::vector <int>& points2);
 bool initOpenGL(GLFWwindow** window, int width, int height, const char* title);
 void drawAxes();
 

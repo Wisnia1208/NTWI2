@@ -1,12 +1,27 @@
 #include "Functions.h"
 
-void drawPoints(const std::vector<std::pair<int, int>>& points) {
+void drawPoints(const std::vector<std::pair<int, int>>& points, const std::vector <int>& points2) {
     //glBegin(GL_POINTS);
     int segments = 30;
-    for (const auto& point : points) {
+    for (size_t i = 0; i < points.size(); ++i) {
+        const auto& point = points[i];
         float x = point.first;
         float y = point.second;
-        float radius = 0.3f; // Promieñ okrêgu punktu
+        float radius = 0.1f * points2[i]; // Promieñ okrêgu punktu
+        if (radius < 1) {
+            glColor3f(0.0f, 1.0f, 0.0f);
+        }
+        else if (radius < 2) {
+            glColor3f(1.0f, 1.0f, 0.0f);
+            radius /= 2;
+        }
+        else if (radius < 3) {
+            glColor3f(1.0f, 0.0f, 0.0f);
+            radius /= 3;
+        }
+        else {
+            glColor3f(1.0f, 0.0f, 1.0f);
+        }
 
         // Rysowanie okrêgu jako wielok¹ta
         drawCircle(x, y, radius, segments);
