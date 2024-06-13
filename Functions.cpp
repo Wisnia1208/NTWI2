@@ -104,3 +104,9 @@ void drawCircle(float x, float y, float radius, int segments) {
     glEnd();
 }
 
+double calculateDistance(const std::pair<int, int>& p1, const std::pair<int, int>& p2) {
+    int dx = p2.first - p1.first;
+    int dy = p2.second - p1.second;
+    return std::sqrt(dx * dx + dy * dy);
+}
+
