@@ -33,7 +33,7 @@ void drawPoints(const std::vector<std::pair<int, int>>& points, const std::vecto
         // Rysowanie okrêgu jako wielok¹ta
         drawCircle(x, y, radius, segments);
     }
-    glEnd();
+    //glEnd();
 }
 
 bool initOpenGL(GLFWwindow** window, int width, int height, const char* title) {
