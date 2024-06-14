@@ -19,8 +19,9 @@ int dimension, capacity;
 std::vector <Point> nodes;
 std::vector <Color> rainbow;
 int window_height = 800, window_width = 800;
+int numTrucks;
 
-int numTrucks = 10; //do zmieniania jak na razie niestety
+ //do zmieniania jak na razie niestety
 //std::string fileName = "A-n32-k5.vrp.txt"; //to też
 std::string fileName = "A-n80-k10.vrp.txt";
 
@@ -44,8 +45,9 @@ int main()
             if (s.find("DIMENSION")!=std::string::npos) {
                 std::string dim_str = s.substr(12);
                 dimension = std::stoi(dim_str);
-            }else if (s.find("COMMENT : ") != std::string::npos){
-                std::cout << s << std::endl;
+            }else if (s.find("No of trucks: ") != std::string::npos){
+                std::string NT_str = s.substr((s.find("No of trucks: ") + 14), (s.find(", Optimal value: ")-(s.find("No of trucks: ") + 14)));
+                numTrucks = std::stoi(NT_str);
             }else if (s.find("CAPACITY") != std::string::npos) {
                 std::string cap_str = s.substr(11);
                 capacity = std::stoi(cap_str);
