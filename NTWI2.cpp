@@ -17,8 +17,9 @@
 std::fstream input;
 int dimension, capacity;
 std::vector <Point> nodes;
-int window_height = 900, window_width = 900;
+int window_height = 800, window_width = 800;
 int numTrucks;
+std::vector <Color> rainbow = rainbow_colors();
 
  //do zmieniania jak na razie niestety
 //std::string fileName = "A-n32-k5.vrp.txt"; //to też
@@ -92,10 +93,6 @@ int main()
     }
 
     std::cout << std::endl << "Lenght of all routes: " << sum << std::endl;
-
-    std::vector <Color> rainbow = rainbow_colors();
-
-
 
     GLFWwindow* window;
 
