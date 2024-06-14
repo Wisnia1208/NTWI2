@@ -17,8 +17,7 @@
 std::fstream input;
 int dimension, capacity;
 std::vector <Point> nodes;
-std::vector <Color> rainbow;
-int window_height = 800, window_width = 800;
+int window_height = 900, window_width = 900;
 int numTrucks;
 
  //do zmieniania jak na razie niestety
@@ -94,44 +93,7 @@ int main()
 
     std::cout << std::endl << "Lenght of all routes: " << sum << std::endl;
 
-    //rainbow
-    Color clr;
-
-    clr.x = 148.0f / 255.0f;
-    clr.y = 0.0f / 255.0f;
-    clr.z = 211.0f / 255.0f;
-    rainbow.push_back(clr);//fiolet
-
-    clr.x = 75.0f / 255.0f;
-    clr.y = 0.0f / 255.0f;
-    clr.z = 130.0f / 255.0f;
-    //rainbow.push_back(clr);//ciemny fiolet
-
-    clr.x = .0f / 255.0f;
-    clr.y = 0.0f / 255.0f;
-    clr.z = 255.0f / 255.0f;
-    rainbow.push_back(clr);//niebieski
-
-    clr.x = 0.0f / 255.0f;
-    clr.y = 255.0f / 255.0f;
-    clr.z = 0.0f / 255.0f;
-    rainbow.push_back(clr);//zielony
-
-    clr.x = 255.0f / 255.0f;
-    clr.y = 255.0f / 255.0f;
-    clr.z = 0.0f / 255.0f;
-    rainbow.push_back(clr);//żółty
-
-    clr.x = 255.0f / 255.0f;
-    clr.y = 127.0f / 255.0f;
-    clr.z = 0.0f / 255.0f;
-    rainbow.push_back(clr);//pomarańczowy
-
-    clr.x = 255.0f / 255.0f;
-    clr.y = 0.0f / 255.0f;
-    clr.z = 0.0f / 255.0f;
-    rainbow.push_back(clr);//czerowny
-    //end of rainbow
+    std::vector <Color> rainbow = rainbow_colors();
 
 
 
@@ -143,7 +105,7 @@ int main()
     }
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glPointSize(5.0f);
+    //glPointSize(5.0f);
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 

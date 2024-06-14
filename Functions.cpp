@@ -56,7 +56,7 @@ bool initOpenGL(GLFWwindow** window, int width, int height, const char* title) {
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(1.0, 100.0, 1.0, 100.0, -1.0, 1.0); // Zakres wspó³rzêdnych od 1 do 100
+    glOrtho(-1.0, 101.0, -1.0, 101.0, -1.0, 1.0); // Zakres wspó³rzêdnych od 1 do 100
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
@@ -68,14 +68,14 @@ void drawAxes() {
 
     // Oœ X
     glBegin(GL_LINES);
-    glVertex2f(1.0f, 1.0f);
-    glVertex2f(100.0f, 1.0f);
+    glVertex2f(0.0f, 0.0f);
+    glVertex2f(100.0f, 0.0f);
     glEnd();
 
     // Oœ Y
     glBegin(GL_LINES);
-    glVertex2f(1.0f, 1.0f);
-    glVertex2f(1.0f, 100.0f);
+    glVertex2f(0.0f, 0.0f);
+    glVertex2f(0.0f, 100.0f);
     glEnd();
 
     // Podzia³ka na osi X
@@ -215,3 +215,108 @@ void twoOpt(std::vector<Point>& route) {
         }
     }
 }
+
+std::vector <Color> rainbow_colors(){
+    //rainbow
+    Color clr;
+    std::vector <Color> rainbow;
+
+    // Pushing existing colors
+    clr.x = 148.0f / 255.0f;
+    clr.y = 0.0f / 255.0f;
+    clr.z = 211.0f / 255.0f;
+    rainbow.push_back(clr); // Violet
+
+    clr.x = 75.0f / 255.0f;
+    clr.y = 0.0f / 255.0f;
+    clr.z = 130.0f / 255.0f;
+    //rainbow.push_back(clr); // Dark Violet
+
+    clr.x = 0.0f / 255.0f;
+    clr.y = 0.0f / 255.0f;
+    clr.z = 255.0f / 255.0f;
+    rainbow.push_back(clr); // Blue
+
+    clr.x = 0.0f / 255.0f;
+    clr.y = 255.0f / 255.0f;
+    clr.z = 0.0f / 255.0f;
+    rainbow.push_back(clr); // Green
+
+    clr.x = 255.0f / 255.0f;
+    clr.y = 255.0f / 255.0f;
+    clr.z = 0.0f / 255.0f;
+    rainbow.push_back(clr); // Yellow
+
+    clr.x = 255.0f / 255.0f;
+    clr.y = 127.0f / 255.0f;
+    clr.z = 0.0f / 255.0f;
+    rainbow.push_back(clr); // Orange
+
+    clr.x = 255.0f / 255.0f;
+    clr.y = 0.0f / 255.0f;
+    clr.z = 0.0f / 255.0f;
+    rainbow.push_back(clr); // Red
+
+    // Additional colors to make up 20 elements
+    clr.x = 128.0f / 255.0f;
+    clr.y = 0.0f / 255.0f;
+    clr.z = 128.0f / 255.0f;
+    //rainbow.push_back(clr); // Purple
+
+    clr.x = 0.0f / 255.0f;
+    clr.y = 255.0f / 255.0f;
+    clr.z = 255.0f / 255.0f;
+    rainbow.push_back(clr); // Cyan
+
+    clr.x = 255.0f / 255.0f;
+    clr.y = 192.0f / 255.0f;
+    clr.z = 203.0f / 255.0f;
+    rainbow.push_back(clr); // Pink
+
+    clr.x = 0.0f / 255.0f;
+    clr.y = 128.0f / 255.0f;
+    clr.z = 0.0f / 255.0f;
+    rainbow.push_back(clr); // Dark Green
+
+    clr.x = 255.0f / 255.0f;
+    clr.y = 20.0f / 255.0f;
+    clr.z = 147.0f / 255.0f;
+    rainbow.push_back(clr); // Deep Pink
+
+    clr.x = 255.0f / 255.0f;
+    clr.y = 69.0f / 255.0f;
+    clr.z = 0.0f / 255.0f;
+    rainbow.push_back(clr); // Orange Red
+
+    clr.x = 255.0f / 255.0f;
+    clr.y = 99.0f / 255.0f;
+    clr.z = 71.0f / 255.0f;
+    rainbow.push_back(clr); // Tomato
+
+    clr.x = 244.0f / 255.0f;
+    clr.y = 164.0f / 255.0f;
+    clr.z = 96.0f / 255.0f;
+    rainbow.push_back(clr); // Sandy Brown
+
+    clr.x = 210.0f / 255.0f;
+    clr.y = 180.0f / 255.0f;
+    clr.z = 140.0f / 255.0f;
+    rainbow.push_back(clr); // Tan
+
+    clr.x = 255.0f / 255.0f;
+    clr.y = 140.0f / 255.0f;
+    clr.z = 0.0f / 255.0f;
+    rainbow.push_back(clr); // Dark Orange
+
+    clr.x = 188.0f / 255.0f;
+    clr.y = 143.0f / 255.0f;
+    clr.z = 143.0f / 255.0f;
+    rainbow.push_back(clr); // Rosy Brown
+
+    clr.x = 46.0f / 255.0f;
+    clr.y = 139.0f / 255.0f;
+    clr.z = 87.0f / 255.0f;
+    rainbow.push_back(clr); // Sea Green
+    //end of rainbow
+    return rainbow;
+};

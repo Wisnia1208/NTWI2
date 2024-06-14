@@ -27,5 +27,6 @@ void drawLine(int x1, int y1, int x2, int y2, Color clr);
 double calculateRouteLength(const std::vector<Point>& route);
 void twoOptSwap(std::vector<Point>& route, int i, int k);
 void twoOpt(std::vector<Point>& route);
+std::vector <Color> rainbow_colors();
 
 #endif
