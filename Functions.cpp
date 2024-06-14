@@ -1,15 +1,14 @@
 #include "Functions.h"
 
-void drawPoints(const std::vector<std::pair<int, int>>& points, const std::vector <int>& points2) {
+void drawPoints(const std::vector<Point>& points) {
     //glBegin(GL_POINTS);
     int segments = 30;
-    for (size_t i = 0; i < points.size(); ++i) {
-        const auto& point = points[i];
-        float x = point.first;
-        float y = point.second;
-        float radius = points2[i]/5; // Promieñ okrêgu punktu
-        if (points2[i] < 10) {
-            if (points2[i] == 0){
+    for (const auto& point : points) {
+        float x = point.x;
+        float y = point.y;
+        float radius = point.demand/5; // Promieñ okrêgu punktu
+        if (point.demand < 10) {
+            if (point.demand == 0){
                 glColor3f(0.0f, 0.5f, 1.0f);
                 radius = 1.0f;
             }
@@ -18,11 +17,11 @@ void drawPoints(const std::vector<std::pair<int, int>>& points, const std::vecto
             }
             
         }
-        else if (points2[i] < 20) {
+        else if (point.demand < 20) {
             glColor3f(1.0f, 1.0f, 0.0f);
             radius /= 2;
         }
-        else if (points2[i] < 30) {
+        else if (point.demand < 30) {
             glColor3f(1.0f, 0.0f, 0.0f);
             radius /= 3;
         }
@@ -104,9 +103,51 @@ void drawCircle(float x, float y, float radius, int segments) {
     glEnd();
 }
 
-double calculateDistance(const std::pair<int, int>& p1, const std::pair<int, int>& p2) {
-    int dx = p2.first - p1.first;
-    int dy = p2.second - p1.second;
-    return std::sqrt(dx * dx + dy * dy);
+double calculateDistance(Point a, Point b) {
+    return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
 }
 
+std::vector<std::vector<Point>> solveVRP(std::vector<Point>& points, int truckCapacity, int numTrucks) {
+    std::vector<std::vector<Point>> routes(numTrucks);
+    std::vector<bool> visited(points.size(), false);
+    int currentTruck = 0;
+    int remainingCapacity = truckCapacity;
+
+    for (int i = 0; i < points.size(); ++i) {
+        if (visited[i]) continue;
+        if (points[i].demand > remainingCapacity) {
+            currentTruck++;
+            if (currentTruck >= numTrucks) {
+                std::cout << "Not enough trucks to handle all deliveries." << std::endl;
+                return std::vector<std::vector<Point>> (0); // to do wywalanie porogramu albo b³êdu
+            }
+            remainingCapacity = truckCapacity;
+        }
+        routes[currentTruck].push_back(points[i]);
+        visited[i] = true;
+        remainingCapacity -= points[i].demand;
+
+        Point lastPoint = points[i];
+        while (remainingCapacity > 0) {
+            int nextPoint = -1;
+            double minDist = std::numeric_limits<double>::max();
+            for (int j = 0; j < points.size(); ++j) {
+                if (!visited[j] && points[j].demand <= remainingCapacity) {
+                    double dist = calculateDistance(lastPoint, points[j]);
+                    if (dist < minDist) {
+                        minDist = dist;
+                        nextPoint = j;
+                    }
+                }
+            }
+            if (nextPoint == -1) break;
+            routes[currentTruck].push_back(points[nextPoint]);
+            visited[nextPoint] = true;
+            remainingCapacity -= points[nextPoint].demand;
+            lastPoint = points[nextPoint];
+        }
+    }
+
+    return routes;
+
+}

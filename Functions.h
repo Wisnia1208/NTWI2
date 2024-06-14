@@ -4,11 +4,19 @@
 #include <vector>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <cmath>
+#include <algorithm>
+
+struct Point {
+    int x, y;
+    int demand;
+};
 
 void drawCircle(float x, float y, float radius, int segments);
-void drawPoints(const std::vector<std::pair<int, int>>& points, const std::vector <int>& points2);
+void drawPoints(const std::vector<Point>& points);
 bool initOpenGL(GLFWwindow** window, int width, int height, const char* title);
 void drawAxes();
-double calculateDistance(const std::pair<int, int>& p1, const std::pair<int, int>& p2);
+double calculateDistance(Point a, Point b);
+std::vector<std::vector<Point>> solveVRP(std::vector<Point>& points, int truckCapacity, int numTrucks);
 
 #endif

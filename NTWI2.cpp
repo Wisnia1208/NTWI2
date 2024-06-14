@@ -11,11 +11,12 @@
 
 //DEKLARACJE
 
+
+
 //std::vector <Car> carVector;
 std::fstream input;
 int dimension, capacity;
-std::vector <std::pair<int, int>> coord;
-std::vector <int> demand;
+std::vector <Point> nodes;
 int window_height = 800, window_width = 800;
 
 
@@ -43,25 +44,42 @@ int main()
                 capacity = std::stoi(cap_str);
             }else if (s == "NODE_COORD_SECTION ") {
                 int x, y;
+                Point p;
                 for (int i = 0; i < dimension; i++) {
                     input >> x >> x >> y;
-                    coord.push_back(std::make_pair(x,y));
+                    p.x = x;
+                    p.y = y;
+                    p.demand = 0;
+                    nodes.push_back(p);
                 }
             }else if (s == "DEMAND_SECTION ") {
                 int x;
                 for (int i = 0; i < dimension; i++) {
                     input >> x >> x;
-                    demand.push_back(x);
+                    nodes[i].demand = x;
                 }
             }
         }
         input.close();
     }
-    // w wektorze coord siedzą koordy bez ID po prostu po kolei, a w wektorze demand tak samo siedzą zapotrzebowania konkretnych punktów
-    for (const auto& i : coord) {
-        std::cout << i.first << " " << i.second << std::endl;
+    // w wektorze nodes siedzą koordy bez ID po prostu po kolei, a w wektorze demand tak samo siedzą zapotrzebowania konkretnych punktów
+    for (const auto& i : nodes) {
+        std::cout << i.x << " " << i.y << " - " << i.demand << std::endl;
     }
     //wypis tych punktów
+
+    //rozw
+    int truckCapacity = 100;
+    int numTrucks = 5;
+    std::cout << std::endl << std::endl << std::endl;
+    std::vector<std::vector<Point>> routes = solveVRP(nodes, truckCapacity, numTrucks);
+    for (int i = 0; i < routes.size(); ++i) {
+        std::cout << "Truck " << i + 1 << " route: ";
+        for (Point& p : routes[i]) {
+            std::cout << "(" << p.x << ", " << p.y << ") ";
+        }
+        std::cout << std::endl;
+    }
 
     GLFWwindow* window;
 
@@ -82,7 +100,7 @@ int main()
         drawAxes();
         // Rysowanie punktów
         //glColor3f(1.0f, 0.0f, 0.0f); //czerwony
-        drawPoints(coord,demand);
+        drawPoints(nodes);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

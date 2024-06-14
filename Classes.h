@@ -3,6 +3,8 @@
 #include <string>
 #include "Functions.h"
 
+//useless features jak na razie
+
 class Car {
 protected:
     std::string model = "";
