@@ -158,7 +158,7 @@ int main()
 
         for (int i = 0; i < routes.size(); ++i) {
             for (int j = 0; j < routes[i].size()-1;j++) {
-                drawLine(routes[i][j].x, routes[i][j].y, routes[i][j+1].x, routes[i][j+1].y, rainbow[i%6]);
+                drawLine(routes[i][j].x, routes[i][j].y, routes[i][j+1].x, routes[i][j+1].y, rainbow[i%rainbow.size()]);
             }
         }
 
