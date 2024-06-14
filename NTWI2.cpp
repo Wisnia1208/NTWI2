@@ -82,17 +82,27 @@ int main()
     std::vector<std::vector<Point>> routes = solveVRP(nodes, capacity, numTrucks);
 
     float sum = 0;
+    double max = DBL_MIN;
+    double min = DBL_MAX;
     for (int i = 0; i < routes.size(); ++i) {
         std::cout << "Truck " << i + 1 << " route: ";
         for (Point& p : routes[i]) {
             std::cout << "(" << p.x << ", " << p.y << ") ";
         }
         std::cout << std::endl;
-        std::cout << "length of this route: " << calculateRouteLength(routes[i]) << std::endl;
+        double result = calculateRouteLength(routes[i]);
+        if (result > max) {
+            max = result;
+        }
+        if (result < min) {
+            min = result;
+        }
+        std::cout << "length of this route: " << result << std::endl;
         sum += calculateRouteLength(routes[i]);
     }
 
     std::cout << std::endl << "Lenght of all routes: " << sum << std::endl;
+    std::cout << "min - max difference: " << max - min << std::endl;
 
     GLFWwindow* window;
 
