@@ -20,8 +20,9 @@ std::vector <Point> nodes;
 std::vector <Color> rainbow;
 int window_height = 800, window_width = 800;
 
-int numTrucks = 5; //do zmieniania jak na razie niestety
-std::string fileName = "A-n32-k5.vrp.txt"; //to też
+int numTrucks = 10; //do zmieniania jak na razie niestety
+//std::string fileName = "A-n32-k5.vrp.txt"; //to też
+std::string fileName = "A-n80-k10.vrp.txt";
 
 
 int main()
