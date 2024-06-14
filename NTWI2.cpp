@@ -17,7 +17,11 @@
 std::fstream input;
 int dimension, capacity;
 std::vector <Point> nodes;
+std::vector <Color> rainbow;
 int window_height = 800, window_width = 800;
+
+int numTrucks = 5; //do zmieniania jak na razie niestety
+std::string fileName = "A-n32-k5.vrp.txt"; //to też
 
 
 int main()
@@ -31,7 +35,7 @@ int main()
         std::cout << "Model auta: " << carVector[i].getModel() << " Pojemnosc auta: " << carVector[i].getCapacity() << '\n';
     }*/
 
-    input.open("A-n32-k5.vrp.txt",std::ios::in);
+    input.open(fileName,std::ios::in);
 
     if (input.is_open()) {
         std::string s;
@@ -39,6 +43,8 @@ int main()
             if (s.find("DIMENSION")!=std::string::npos) {
                 std::string dim_str = s.substr(12);
                 dimension = std::stoi(dim_str);
+            }else if (s.find("COMMENT : ") != std::string::npos){
+                std::cout << s << std::endl;
             }else if (s.find("CAPACITY") != std::string::npos) {
                 std::string cap_str = s.substr(11);
                 capacity = std::stoi(cap_str);
@@ -69,17 +75,62 @@ int main()
     //wypis tych punktów
 
     //rozw
-    int truckCapacity = 100;
-    int numTrucks = 5;
     std::cout << std::endl << std::endl << std::endl;
-    std::vector<std::vector<Point>> routes = solveVRP(nodes, truckCapacity, numTrucks);
+    std::vector<std::vector<Point>> routes = solveVRP(nodes, capacity, numTrucks);
+
+    float sum = 0;
     for (int i = 0; i < routes.size(); ++i) {
         std::cout << "Truck " << i + 1 << " route: ";
         for (Point& p : routes[i]) {
             std::cout << "(" << p.x << ", " << p.y << ") ";
         }
         std::cout << std::endl;
+        std::cout << "length of this route: " << calculateRouteLength(routes[i]) << std::endl;
+        sum += calculateRouteLength(routes[i]);
     }
+
+    std::cout << std::endl << "Lenght of all routes: " << sum << std::endl;
+
+    //rainbow
+    Color clr;
+
+    clr.x = 148.0f / 255.0f;
+    clr.y = 0.0f / 255.0f;
+    clr.z = 211.0f / 255.0f;
+    rainbow.push_back(clr);//fiolet
+
+    clr.x = 75.0f / 255.0f;
+    clr.y = 0.0f / 255.0f;
+    clr.z = 130.0f / 255.0f;
+    //rainbow.push_back(clr);//ciemny fiolet
+
+    clr.x = .0f / 255.0f;
+    clr.y = 0.0f / 255.0f;
+    clr.z = 255.0f / 255.0f;
+    rainbow.push_back(clr);//niebieski
+
+    clr.x = 0.0f / 255.0f;
+    clr.y = 255.0f / 255.0f;
+    clr.z = 0.0f / 255.0f;
+    rainbow.push_back(clr);//zielony
+
+    clr.x = 255.0f / 255.0f;
+    clr.y = 255.0f / 255.0f;
+    clr.z = 0.0f / 255.0f;
+    rainbow.push_back(clr);//żółty
+
+    clr.x = 255.0f / 255.0f;
+    clr.y = 127.0f / 255.0f;
+    clr.z = 0.0f / 255.0f;
+    rainbow.push_back(clr);//pomarańczowy
+
+    clr.x = 255.0f / 255.0f;
+    clr.y = 0.0f / 255.0f;
+    clr.z = 0.0f / 255.0f;
+    rainbow.push_back(clr);//czerowny
+    //end of rainbow
+
+
 
     GLFWwindow* window;
 
@@ -101,6 +152,12 @@ int main()
         // Rysowanie punktów
         //glColor3f(1.0f, 0.0f, 0.0f); //czerwony
         drawPoints(nodes);
+
+        for (int i = 0; i < routes.size(); ++i) {
+            for (int j = 0; j < routes[i].size()-1;j++) {
+                drawLine(routes[i][j].x, routes[i][j].y, routes[i][j+1].x, routes[i][j+1].y, rainbow[i]);
+            }
+        }
 
         glfwSwapBuffers(window);
         glfwPollEvents();

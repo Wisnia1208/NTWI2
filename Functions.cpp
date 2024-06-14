@@ -6,6 +6,9 @@ void drawPoints(const std::vector<Point>& points) {
     for (const auto& point : points) {
         float x = point.x;
         float y = point.y;
+        float radius = 0.5f;
+        glColor3f(1.0f, 0.0f, 0.0f);
+        /*
         float radius = point.demand/5; // Promieñ okrêgu punktu
         if (point.demand < 10) {
             if (point.demand == 0){
@@ -28,7 +31,7 @@ void drawPoints(const std::vector<Point>& points) {
         else {
             glColor3f(1.0f, 0.0f, 1.0f);
         }
-
+        */
         // Rysowanie okrêgu jako wielok¹ta
         drawCircle(x, y, radius, segments);
     }
@@ -108,46 +111,107 @@ double calculateDistance(Point a, Point b) {
 }
 
 std::vector<std::vector<Point>> solveVRP(std::vector<Point>& points, int truckCapacity, int numTrucks) {
+    // Find the starting point (depot)
+    Point depot;
+    for (const auto& point : points) {
+        if (point.demand == 0) {
+            depot = point;
+            break;
+        }
+    }
+
+    // Remove the depot from the points list
+    points.erase(remove_if(points.begin(), points.end(), [&](Point p) { return p.demand == 0; }), points.end());
+
     std::vector<std::vector<Point>> routes(numTrucks);
     std::vector<bool> visited(points.size(), false);
+    // Assign points to trucks using a balanced approach
     int currentTruck = 0;
-    int remainingCapacity = truckCapacity;
+    while (find(visited.begin(), visited.end(), false) != visited.end()) {
+        int remainingCapacity = truckCapacity;
+        Point currentLocation = depot;
 
-    for (int i = 0; i < points.size(); ++i) {
-        if (visited[i]) continue;
-        if (points[i].demand > remainingCapacity) {
-            currentTruck++;
-            if (currentTruck >= numTrucks) {
-                std::cout << "Not enough trucks to handle all deliveries." << std::endl;
-                return std::vector<std::vector<Point>> (0); // to do wywalanie porogramu albo b³êdu
-            }
-            remainingCapacity = truckCapacity;
-        }
-        routes[currentTruck].push_back(points[i]);
-        visited[i] = true;
-        remainingCapacity -= points[i].demand;
+        routes[currentTruck].push_back(depot); // Start route with depot
 
-        Point lastPoint = points[i];
         while (remainingCapacity > 0) {
             int nextPoint = -1;
             double minDist = std::numeric_limits<double>::max();
+
             for (int j = 0; j < points.size(); ++j) {
                 if (!visited[j] && points[j].demand <= remainingCapacity) {
-                    double dist = calculateDistance(lastPoint, points[j]);
+                    double dist = calculateDistance(currentLocation, points[j]);
                     if (dist < minDist) {
                         minDist = dist;
                         nextPoint = j;
                     }
                 }
             }
+
             if (nextPoint == -1) break;
+
             routes[currentTruck].push_back(points[nextPoint]);
             visited[nextPoint] = true;
             remainingCapacity -= points[nextPoint].demand;
-            lastPoint = points[nextPoint];
+            currentLocation = points[nextPoint];
         }
+
+        routes[currentTruck].push_back(depot); // Return to depot
+
+        // Move to the next truck
+        currentTruck = (currentTruck + 1) % numTrucks;
+    }
+
+    // Optimize each route using 2-opt
+    for (auto& route : routes) {
+        twoOpt(route);
     }
 
     return routes;
 
+}
+
+void drawLine(int x1, int y1 ,int x2, int y2, Color clr) {
+    glColor3f(clr.x, clr.y, clr.z); // Ustawienie koloru
+    glBegin(GL_LINES);
+    glVertex2f(x1, y1);
+    glVertex2f(x2, y2);
+    glEnd();
+}
+
+double calculateRouteLength(const std::vector<Point>& route) {
+    double totalLength = 0.0;
+    for (size_t i = 1; i < route.size(); ++i) {
+        totalLength += calculateDistance(route[i - 1], route[i]);
+    }
+    return totalLength;
+}
+
+void twoOptSwap(std::vector<Point>& route, int i, int k) {
+    while (i < k) {
+        std::swap(route[i], route[k]);
+        i++;
+        k--;
+    }
+}
+
+void twoOpt(std::vector<Point>& route) {
+    bool improvement = true;
+    while (improvement) {
+        improvement = false;
+        double bestDistance = calculateRouteLength(route);
+
+        for (int i = 1; i < route.size() - 2; ++i) {
+            for (int k = i + 1; k < route.size() - 1; ++k) {
+                twoOptSwap(route, i, k);
+                double newDistance = calculateRouteLength(route);
+                if (newDistance < bestDistance) {
+                    bestDistance = newDistance;
+                    improvement = true;
+                }
+                else {
+                    twoOptSwap(route, i, k); // Revert the change
+                }
+            }
+        }
+    }
 }
