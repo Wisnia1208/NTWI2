@@ -3,8 +3,6 @@
 #include <string>
 #include "Functions.h"
 
-//useless for now
-
 class Vect {
 private:
 	double x;
